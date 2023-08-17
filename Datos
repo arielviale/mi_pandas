@@ -1,1 +1,23 @@
+import PyPDF2
 
+# Abre el archivo PDF
+pdf = PyPDF2.PdfFileReader("891.pdf")
+
+# Extrae los datos del archivo PDF
+data = pdf.getPage(0).extractText()
+
+# Importa los datos a una base de datos MySQL
+import MySQLdb
+
+# Crea una conexión a la base de datos
+conn = MySQLdb.connect(host='localhost', user='root', passwd='password', db='my_database')
+
+# Crea una tabla en la base de datos
+cur = conn.cursor()
+cur.execute('CREATE TABLE my_table (id INT, name VARCHAR(255), address VARCHAR(255))')
+
+# Inserta los datos en la tabla
+cur.execute('INSERT INTO my_table (id, name, address) VALUES (%s, %s, %s)', (1, 'John Doe', '123 Main Street'))
+
+# Cierra la conexión a la base de datos
+conn.close()
